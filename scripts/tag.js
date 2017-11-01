@@ -1,3 +1,5 @@
+import Utils from "./Utils";
+
 //модель
 let data = {
     name: "Evgeniy",
@@ -12,11 +14,66 @@ let data2 = {
     oop: "prototypes",
     iscool: true
 };
+
 /*
     первым параметром передается имя требуемого тега
     вторым - модель, которые впоследствии будут атрибутами данного тега
     третий параметр является контентом, который будет содержанием в этом теге
  */
+class Tag {
+    constructor(tagName = "div", obj = {}, content = "") {
+        this.name = tagName;
+        this.obj = obj;
+        this.content = content;
+    }
+
+    get render() {
+        return this._exec();
+    }
+
+    _validateTagName() {
+        let tagPattern = /[0-9-_ ]+/;
+        if (tagPattern.test(this.name)) {
+            throw new Error("Not valid: " + this.name);
+        }
+    }
+
+    _validateAttributes() {
+        let objPattern = /^[a-z][a-z_\-\d]+[^_\-]$/;
+        for (let key in this.obj) {
+            if (!objPattern.test(key)) {
+                throw new Error("Not valid: " + key);
+            }
+
+        }
+    }
+
+    _exec() {
+        let singleTagPattern = /area|base|basefont|bgsound|br|col|command|embed|hr|img|isindex|input|keygen|link|meta|param|source|track|wbr/;
+        let result = "<" + this.name;
+
+        this._validateTagName();
+        this._validateAttributes();
+
+        let i = 0;
+        for (let key in this.obj) {
+            result += Utils.formatted(" {" + i + "}" + "=" + "\"" + "{" + i + 1 + "}" + "\"", key, this.obj[key]);
+            i++;
+        }
+        singleTagPattern.test(this.name) ? result += "/>" : result += ">" + this.content + "</" + this.name + ">";
+
+        return result;
+    }
+
+}
+
+let tag = new Tag("div", data, "Просто какой то текст");
+console.log(tag.render);
+let tag2 = new Tag("header", data2, "тест");
+console.log(tag2.render);
+
+
+/*
 function tag(tagName="div", attributes={}, content="") {
     //для того, чтобы не изменять глобальный объект, переданный в функцию - создаем их копии.
     let name = tagName.toLowerCase();
@@ -43,24 +100,12 @@ function tag(tagName="div", attributes={}, content="") {
 
     return result;
 }
-//простенькая валидация тега
-function validateTagName(tagName, pattern, error = "Not valid") {
-    if (pattern.test(tagName)) {
-        throw new Error(error +": "+ tagName);
-    }
-}
-//валидация аттрибутов
-function validateAttributes(attributes, pattern, error = "Not valid") {
-    for (let key in attributes) {
-        if (!pattern.test(key)) {
-            throw new Error(error+": "+key);
-        }
+*/
 
-    }
-}
+
 //вызываем
-console.log(tag("div", data, tag("div", data2)));
+/*console.log(tag("div", data, tag("div", data2)));
 console.log(tag("div", data, "Просто какой то текст"));
-console.log(tag(), "тест без параметров");
+console.log(tag(), "тест без параметров");*/
 
 

@@ -1,3 +1,4 @@
+/**@depricated since date*/
 function formatted(sourceString) {
     //количество скобок со значениями
     let counter = 0;

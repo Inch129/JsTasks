@@ -1,3 +1,4 @@
+/**@depricated since date*/
 function map(source, callback) {
 
 	let result = [];
@@ -40,4 +41,3 @@ function reduce(source, callback, initialValue) {
 	
   return result;
 }
-
