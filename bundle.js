@@ -65,130 +65,211 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__tag__ = __webpack_require__(1);
 
 
-let someTag = new __WEBPACK_IMPORTED_MODULE_0__tag__["a" /* default */]();
-someTag.setTagAttr({data: "someData"}).setTagName("header").setTagContent("рабочий");
+var _tag = __webpack_require__(1);
+
+var _tag2 = _interopRequireDefault(_tag);
+
+var _markupParser = __webpack_require__(3);
+
+var _markupParser2 = _interopRequireDefault(_markupParser);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var parser = new _markupParser2.default();
+console.log('<header class=\"required\" id=\"name\"><input type=\"email\" placeholder=\"email\"></div> ');
+
+parser.parseHtml('<header class=\"required\" id=\"name\"><input type=\"email\" placeholder=\"email\"></div> ');
+
+var someTag = new _tag2.default();
+someTag.setTagAttr({ data: "someData" }).setTagName("header").setTagContent("рабочий");
 console.log(someTag.render);
-
+var anotherTag = new _tag2.default("div", { class: "test", some: "pspsps" }, "content");
+console.log(anotherTag.render);
+var anotherTag2 = new _tag2.default("textarea", { some: "pspsps", pfpf: "ftftft" }, "content");
+console.log(anotherTag2.render);
 
 /***/ }),
 /* 1 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Utils__ = __webpack_require__(2);
 
 
-class Tag {
-    constructor(tagName = "div", obj = {}, content = "") {
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _utils = __webpack_require__(2);
+
+var _utils2 = _interopRequireDefault(_utils);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Tag = function () {
+    function Tag() {
+        var tagName = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "div";
+        var obj = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+        var content = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "";
+
+        _classCallCheck(this, Tag);
+
         this._name = tagName;
         this._obj = obj;
         this._content = content;
     }
 
-    setTagName (name) {
-        this._name = name;
-        return this;
-    }
-
-    setTagAttr (obj) {
-        this._obj = obj;
-        return this;
-    }
-
-    setTagContent (content) {
-        this._content = content;
-        return this;
-    }
-
-    get render() {
-        return this._exec();
-    }
-
-    _validateTagName() {
-        let tagPattern = /[0-9-_ ]+/;
-        if (tagPattern.test(this._name)) {
-            throw new Error("Not valid: " + this._name);
+    _createClass(Tag, [{
+        key: "setTagName",
+        value: function setTagName(name) {
+            this._name = name;
+            return this;
         }
-    }
-
-    _validateAttributes() {
-        let objPattern = /^[a-z][a-z_\-\d]+[^_\-]$/;
-        for (let key in this._obj) {
-            if (!objPattern.test(key)) {
-                throw new Error("Not valid: " + key);
+    }, {
+        key: "setTagAttr",
+        value: function setTagAttr(obj) {
+            this._obj = obj;
+            return this;
+        }
+    }, {
+        key: "setTagContent",
+        value: function setTagContent(content) {
+            this._content = content;
+            return this;
+        }
+    }, {
+        key: "_validateTagName",
+        value: function _validateTagName() {
+            var tagPattern = /[0-9-_ ]+/;
+            if (tagPattern.test(this._name)) {
+                throw new Error("Not valid: " + this._name);
             }
-
         }
-    }
-
-    _exec() {
-        let singleTagPattern = /area|base|basefont|bgsound|br|col|command|embed|hr|img|isindex|input|keygen|link|meta|param|source|track|wbr/;
-        let result = "<" + this._name;
-
-        this._validateTagName();
-        this._validateAttributes();
-
-        let i = 0;
-        for (let key in this._obj) {
-            result += __WEBPACK_IMPORTED_MODULE_0__Utils__["a" /* default */].formatted(" {" + i + "}" + "=" + "\"" + "{" + i + 1 + "}" + "\"", key, this._obj[key]);
-            i++;
+    }, {
+        key: "_validateAttributes",
+        value: function _validateAttributes() {
+            var objPattern = /^[a-z][a-z_\-\d]+[^_\-]$/;
+            for (var key in this._obj) {
+                if (!objPattern.test(key)) {
+                    throw new Error("Not valid: " + key);
+                }
+            }
         }
-        singleTagPattern.test(this._name) ? result += "/>" : result += ">" + this._content + "</" + this._name + ">";
+    }, {
+        key: "_exec",
+        value: function _exec() {
+            var singleTagPattern = /area|base|basefont|bgsound|br|col|command|embed|hr|img|isindex|input|keygen|link|meta|param|source|track|wbr/;
+            var result = "<" + this._name;
 
-        return result;
-    }
+            this._validateTagName();
+            this._validateAttributes();
 
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Tag;
+            var i = 0;
+            for (var key in this._obj) {
+                result += _utils2.default.formatted(" {" + i + "}" + "=" + "\"" + "{" + i + 1 + "}" + "\"", key, this._obj[key]);
+                i++;
+            }
+            singleTagPattern.test(this._name) ? result += "/>" : result += ">" + this._content + "</" + this._name + ">";
 
+            return result;
+        }
+    }, {
+        key: "render",
+        get: function get() {
+            return this._exec();
+        }
+    }]);
 
+    return Tag;
+}();
 
-
-
-
+exports.default = Tag;
 
 /***/ }),
 /* 2 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-let Utils = {
 
-    formatted: function (sourceString) {
 
-        let source = sourceString;
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var Utils = {
+
+    formatted: function formatted(sourceString) {
+
+        var source = sourceString;
         //количество скобок со значениями
-        let counter = 0;
-        let result;
+        var counter = 0;
+        var result = void 0;
         //поскольку псевдо-массив аргументов на самом деле является объектом, и не имеет соо-вующих методов
         //то приводим его к массиву
-        let values = [];
-        for (let i = 0; i < arguments.length; i++) {
+        var values = [];
+        for (var i = 0; i < arguments.length; i++) {
             values[i] = arguments[i + 1];
         }
         //регулярное выражение ищет паттерн вида "{n}" - где n, любое число.
         result = source.replace(/\{\d+\}/g, function () {
-            let result = values[counter];
+            var result = values[counter];
             counter++;
 
             return result;
         });
 
-
         return result;
     }
 };
 
-/* harmony default export */ __webpack_exports__["a"] = (Utils);
+exports.default = Utils;
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 
 
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var MarkupParser = function () {
+    function MarkupParser() {
+        _classCallCheck(this, MarkupParser);
+    }
+
+    _createClass(MarkupParser, [{
+        key: "parseHtml",
+        value: function parseHtml(str) {
+            var patternTag = /^<\w+/g;
+            var patternObj = /\w+="\w+"/g;
+            var result = "";
+
+            var temp = str.search(/=/g);
+            console.log(temp);
+            var test = {};
+            test.class = "background";
+            console.log(test);
+        }
+    }]);
+
+    return MarkupParser;
+}();
+
+exports.default = MarkupParser;
 
 /***/ })
 /******/ ]);
